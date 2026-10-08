@@ -1,0 +1,21 @@
+# /etc/caddy/Caddyfile  -  https for the agent.
+# __HOST__ is <ip>.sslip.io, filled in by install.sh, so the site can read the agent before the domain exists.
+# CORS headers come from the agent itself; adding them here too makes browsers reject the duplicate.
+# /site.zip is the static site bundled by install.sh, so a Netlify deploy can be fetched from here.
+__HOST__, api.wallpad.run {
+    encode gzip
+    handle /site.zip {
+        root * /opt/wall/data
+        header Access-Control-Allow-Origin *
+        header Cache-Control no-store
+        file_server
+    }
+    handle /wall.git/* {
+        root * /opt/wall/data
+        header Cache-Control no-store
+        file_server
+    }
+    handle {
+        reverse_proxy 127.0.0.1:8791
+    }
+}

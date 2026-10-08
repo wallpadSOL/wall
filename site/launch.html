@@ -1,0 +1,163 @@
+<!doctype html>
+<html lang="en" class="js">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<title>WALL — launch a coin for a stream</title>
+<meta name="description" content="Pick a live Kick or Twitch stream, name the coin, pay the launch fee in Phantom. The platform wallet creates it on pump.fun and the agent starts cutting.">
+<meta property="og:image" content="https://wallpad.run/assets/og.jpg">
+<link rel="icon" href="assets/favicon.svg" type="image/svg+xml">
+<link rel="preconnect" href="https://fonts.googleapis.com"><link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Anton&family=Manrope:wght@400;500;600;700;800&family=IBM+Plex+Mono:wght@400;500;600&display=swap">
+<link rel="stylesheet" href="assets/wall.css">
+<script src="https://unpkg.com/@solana/web3.js@1.95.3/lib/index.iife.min.js"></script>
+</head>
+<body>
+<div class="bg" aria-hidden="true"><i class="p1"></i><i class="p2"></i><i class="g1"></i><i class="g2"></i></div><div class="spot" aria-hidden="true"></div>
+<div class="rail"><div class="wrap">
+  <a class="brand" href="index.html"><span class="lg"></span><span class="wm" data-t="WALL">WALL</span></a>
+  <nav><a href="index.html#board">The wall</a><a href="cuts.html">Cuts</a><a href="index.html#how">How it works</a><a href="fees.html">Fees</a><a href="index.html#token">$WALL</a><a href="index.html#never">Hard limits</a></nav>
+  <div class="right"><span class="clock">--:--:-- UTC</span><span id="agent" class="chip off"><i></i>agent</span><a class="xlink" href="#" target="_blank" rel="noopener" title="WALL on X">𝕏</a><button type="button" class="btn purple" id="connect">Connect Phantom</button></div>
+</div></div>
+
+<header class="hero sub" style="padding-bottom:28px"><div class="wrap" style="grid-template-columns:1fr">
+  <div>
+    <p class="eyebrow">launch · <b>one transaction in phantom</b></p>
+    <h1 class="disp" style="max-width:18ch"><span>Put a stream</span><span class="outline">on the wall.</span></h1>
+    <p class="lead">Pick a live stream, name the coin, pay the launch fee from your own wallet. The platform wallet creates the coin on pump.fun, makes the first buy, and the agent starts cutting for it on the next crossing. Your wallet is the launcher of record and gets the launcher share of that coin's fees every hour.</p>
+    <div class="stats" style="max-width:720px">
+      <div class="stat"><div class="l">launch fee</div><div class="v num" id="fee">–</div></div>
+      <div class="stat"><div class="l">first buy, platform</div><div class="v num" id="devbuy">–</div></div>
+      <div class="stat"><div class="l">$WALL to hold</div><div class="v num t" id="hold">–</div></div>
+      <div class="stat"><div class="l">your fee share</div><div class="v num k">40%</div></div>
+    </div>
+  </div>
+</div></header>
+
+<section style="border-top:0;padding-top:34px"><div class="wrap">
+  <div class="steps">
+    <div><b>Pick a stream</b>Any live stream on the wall without a coin. One coin per stream.</div>
+    <div><b>Name it</b>Name, ticker, one line about the moment, an image. The ticker is permanent.</div>
+    <div><b>Pay and launch</b>One transfer to the platform wallet, shown before you sign. The coin is live in about twenty seconds.</div>
+  </div>
+  <div id="disabled" class="msg" hidden style="margin-bottom:16px">Launching is switched off on the agent right now. The wall still runs. <span class="d">The hot wallet is not funded yet, or the operator paused it.</span></div>
+  <div class="launch">
+    <form class="form" id="form">
+      <label>stream <select id="stream" required><option value="">loading the wall…</option></select></label>
+      <div class="two">
+        <label>name <input id="name" maxlength="32" placeholder="The Boat" required autocomplete="off"></label>
+        <label>ticker <input id="ticker" maxlength="10" placeholder="BOAT" required style="text-transform:uppercase" autocomplete="off"></label>
+      </div>
+      <label>one line about the moment <input id="desc" maxlength="300" placeholder="he said it on the boat and the chat went 58/s" autocomplete="off"></label>
+      <label>image <input id="image" type="file" accept="image/png,image/jpeg,image/gif,image/webp" required></label>
+      <div class="msg d" id="paynote">connect Phantom to see what you will sign.</div>
+      <div class="cta"><button type="submit" class="btn fill big" id="go" disabled>Pay and launch →</button><span class="d" id="who"></span></div>
+      <div id="out" style="display:grid;gap:8px"></div>
+    </form>
+    <aside class="preview">
+      <div class="pv">
+        <div class="img" id="pv-img">image preview</div>
+        <div class="b">
+          <div class="tk" id="pv-tk">$TICKER</div>
+          <div class="nm" id="pv-nm">name</div>
+          <div class="st" id="pv-st">pick a stream on the left</div>
+        </div>
+      </div>
+      <div class="wall one" id="pv-card" style="margin-top:14px"></div>
+    </aside>
+  </div>
+</div></section>
+
+<footer><div class="wrap">
+  <div><div class="brand"><span class="wm" data-t="WALL">WALL</span></div><p style="margin:0;max-width:34ch">A launchpad for live streams on Solana. The agent counts and cuts. It never posts, never trades, never predicts. Nothing here is financial advice.</p></div>
+  <div><h4>platform</h4><a href="index.html#board">The wall</a><a href="launch.html">launch a coin</a><a href="cuts.html">Cuts</a><a href="fees.html">fee log</a></div>
+  <div><h4>docs</h4><a href="index.html#how">How it works</a><a href="index.html#never">Hard limits</a><a href="index.html#token">$WALL</a><a href="https://github.com/wallpadSOL/wall" target="_blank" rel="noopener">agent source</a></div>
+  <div><h4>network</h4><a href="https://solana.com" target="_blank" rel="noopener">Solana mainnet</a><a href="https://pump.fun" target="_blank" rel="noopener">pump.fun</a><a href="https://jup.ag" target="_blank" rel="noopener">Jupiter</a><a href="https://dexscreener.com" target="_blank" rel="noopener">Dexscreener</a></div>
+  <div><h4>social</h4><a class="xlink2" href="#" target="_blank" rel="noopener">X</a><a href="https://kick.com" target="_blank" rel="noopener">Kick</a><a href="https://twitch.tv" target="_blank" rel="noopener">Twitch</a></div>
+  <div class="fine"><span>wall · wallpad.run · solana</span><span>the desk cuts, the post is yours</span></div>
+</div></footer>
+<script src="assets/wall.js"></script>
+<script>
+(async function () {
+  const $ = s => document.querySelector(s);
+  WALL.clock(); document.querySelectorAll('a.xlink2').forEach(a => a.href = WALL.X_URL);
+  const out = (cls, html) => { const d = document.createElement('div'); d.className = 'msg ' + cls; d.innerHTML = html; $('#out').appendChild(d); return d; };
+  let cfg = {enabled: false}, pubkey = null, state = {streams: []};
+  try { cfg = await WALL.get('launch.json'); } catch (e) { out('err', 'cannot reach the agent: ' + WALL.esc(e.message)); }
+  $('#fee').textContent = cfg.enabled ? cfg.launch_fee_sol + ' SOL' : 'off';
+  $('#devbuy').textContent = cfg.enabled ? cfg.dev_buy_sol + ' SOL' : '–';
+  $('#hold').textContent = cfg.wall_mint ? (cfg.min_wall_hold || 0) + ' $WALL' : 'not yet';
+  if (!cfg.enabled) { $('#disabled').hidden = false; }
+
+  const sel = $('#stream');
+  const pre = new URLSearchParams(location.search).get('stream');
+  try {
+    state = await WALL.get('state.json'); WALL.health(state);
+    sel.innerHTML = '<option value="">pick a stream</option>' + state.streams.map(s =>
+      `<option value="${WALL.esc(s.key)}" ${s.key === pre ? 'selected' : ''} ${s.coin || s.live === false ? 'disabled' : ''}>${WALL.esc(s.platform)} · ${WALL.esc(s.name || s.slug)} · ${WALL.fmt(s.viewers)} watching${s.coin ? ' · has $' + WALL.esc(s.coin.ticker) : s.live === false ? ' · offline' : ''}</option>`).join('');
+  } catch (e) { WALL.health(null); sel.innerHTML = '<option value="">agent unreachable</option>'; }
+
+  function preview() {
+    const s = state.streams.find(x => x.key === sel.value);
+    const tk = ($('#ticker').value || 'TICKER').toUpperCase().replace(/[^A-Z0-9]/g, '');
+    $('#pv-tk').textContent = '$' + tk; $('#pv-nm').textContent = $('#name').value || 'name';
+    $('#pv-st').innerHTML = s ? `on <b>${WALL.esc(s.platform)}:${WALL.esc(s.slug)}</b> · chat <b>${s.rate_live}/s</b> · line ${s.line}/s · ${WALL.fmt(s.viewers)} watching` : 'pick a stream on the left';
+    $('#pv-card').innerHTML = s ? WALL.card(s) : '';
+    $('#paynote').innerHTML = cfg.enabled
+      ? `you sign one transfer: <b>${cfg.launch_fee_sol} SOL</b> to the platform wallet <span class="d">${WALL.esc(cfg.hot_wallet || '')}</span>. the platform then creates <b>$${WALL.esc(tk)}</b> on pump.fun and buys ${cfg.dev_buy_sol} SOL of it as the first buy.`
+      : 'launching is off right now.';
+  }
+  sel.onchange = preview; $('#name').oninput = preview; $('#ticker').oninput = preview;
+  $('#image').onchange = () => { const f = $('#image').files[0]; if (!f) return; const u = URL.createObjectURL(f); $('#pv-img').innerHTML = `<img src="${u}" alt="">`; };
+  preview();
+
+  $('#connect').onclick = async () => {
+    const p = window.solana;
+    if (!p || !p.isPhantom) { out('err', 'Phantom is not installed. <a href="https://phantom.app" target="_blank" rel="noopener">phantom.app</a>'); return; }
+    try { const r = await p.connect(); pubkey = r.publicKey.toString(); $('#who').textContent = pubkey.slice(0, 4) + '…' + pubkey.slice(-4); $('#connect').textContent = pubkey.slice(0, 4) + '…' + pubkey.slice(-4); $('#go').disabled = !cfg.enabled; preview(); }
+    catch (e) { out('err', 'connect refused'); }
+  };
+
+  const toB64 = f => new Promise((res, rej) => { const r = new FileReader(); r.onload = () => res(r.result.split(',')[1]); r.onerror = rej; r.readAsDataURL(f); });
+
+  $('#form').onsubmit = async ev => {
+    ev.preventDefault();
+    if (!pubkey || !cfg.enabled) return;
+    const go = $('#go'); go.disabled = true;
+    try {
+      const file = $('#image').files[0];
+      if (!file || file.size > 1800000) throw new Error('image: pick a png or jpg under 1.8 MB');
+      if (!sel.value) throw new Error('pick a stream');
+      const web3 = window.solanaWeb3;
+      const conn = new web3.Connection(cfg.rpc || 'https://api.mainnet-beta.solana.com', 'confirmed');
+      const lamports = Math.round(cfg.launch_fee_sol * 1e9);
+      out('', `paying ${cfg.launch_fee_sol} SOL to the platform wallet <span class="d">${WALL.esc(cfg.hot_wallet)}</span>. check it in Phantom before you sign.`);
+      const tx = new web3.Transaction().add(web3.SystemProgram.transfer({
+        fromPubkey: new web3.PublicKey(pubkey), toPubkey: new web3.PublicKey(cfg.hot_wallet), lamports}));
+      tx.feePayer = new web3.PublicKey(pubkey);
+      tx.recentBlockhash = (await conn.getLatestBlockhash('finalized')).blockhash;
+      const {signature} = await window.solana.signAndSendTransaction(tx);
+      out('', `sent <a href="https://solscan.io/tx/${signature}" target="_blank" rel="noopener">${signature.slice(0, 12)}…</a>, waiting for confirmation`);
+      for (let i = 0; i < 40; i++) {
+        const st = (await conn.getSignatureStatuses([signature])).value[0];
+        if (st && (st.confirmationStatus === 'confirmed' || st.confirmationStatus === 'finalized')) { if (st.err) throw new Error('payment failed on chain'); break; }
+        await new Promise(r => setTimeout(r, 1500));
+      }
+      out('', 'payment confirmed. creating the coin on pump.fun, this takes 10 to 30 seconds…');
+      const body = {stream: sel.value, name: $('#name').value, ticker: $('#ticker').value.toUpperCase(),
+        description: $('#desc').value, image_b64: await toB64(file), mime: file.type || 'image/png', payer: pubkey, payment_sig: signature};
+      const r = await fetch(`${WALL.API}/launch`, {method: 'POST', headers: {'Content-Type': 'application/json'}, body: JSON.stringify(body)});
+      const j = await r.json();
+      if (!r.ok) throw new Error(j.error || ('http ' + r.status));
+      const c = j.coin;
+      out('ok', `<b>$${WALL.esc(c.ticker)} is live.</b><br>mint <span class="d">${WALL.esc(c.mint)}</span><br>
+        <a href="${WALL.esc(c.pump)}" target="_blank" rel="noopener">pump.fun page</a> · <a href="coin.html?mint=${WALL.esc(c.mint)}">coin page on the wall</a> · <a href="https://solscan.io/tx/${WALL.esc(c.create_sig)}" target="_blank" rel="noopener">creation tx</a><br>
+        <span class="d">the agent cuts for this stream on the next crossing. your wallet is the launcher of record.</span>`);
+    } catch (e) {
+      out('err', WALL.esc(e.message || String(e)) + (String(e.message || '').includes('payment') ? ' <span class="d">if you were charged, send the signature to the project account and the launch will be completed by hand.</span>' : ''));
+    } finally { go.disabled = false; }
+  };
+})();
+</script>
+</body>
+</html>

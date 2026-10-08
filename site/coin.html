@@ -1,0 +1,100 @@
+<!doctype html>
+<html lang="en" class="js">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<title>WALL — coin</title>
+<meta property="og:image" content="https://wallpad.run/assets/og.jpg">
+<link rel="icon" href="assets/favicon.svg" type="image/svg+xml">
+<link rel="preconnect" href="https://fonts.googleapis.com"><link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Anton&family=Manrope:wght@400;500;600;700;800&family=IBM+Plex+Mono:wght@400;500;600&display=swap">
+<link rel="stylesheet" href="assets/wall.css">
+</head>
+<body>
+<div class="bg" aria-hidden="true"><i class="p1"></i><i class="p2"></i><i class="g1"></i><i class="g2"></i></div><div class="spot" aria-hidden="true"></div>
+<div class="rail"><div class="wrap">
+  <a class="brand" href="index.html"><span class="lg"></span><span class="wm" data-t="WALL">WALL</span></a>
+  <nav><a href="index.html#board">The wall</a><a href="cuts.html">Cuts</a><a href="index.html#how">How it works</a><a href="fees.html">Fees</a><a href="index.html#token">$WALL</a><a href="index.html#never">Hard limits</a></nav>
+  <div class="right"><span class="clock">--:--:-- UTC</span><span id="agent" class="chip off"><i></i>agent</span><a class="xlink" href="#" target="_blank" rel="noopener" title="WALL on X">𝕏</a><a class="btn fill" href="launch.html">Launch a coin</a></div>
+</div></div>
+
+<header class="hero sub" style="padding-bottom:28px"><div class="wrap" id="head" style="grid-template-columns:minmax(0,1fr) minmax(0,.8fr)"><div><h1 class="disp">loading…</h1></div></div></header>
+<section style="border-top:0;padding-top:34px"><div class="wrap">
+  <div class="sechead"><div><p class="eyebrow">chart</p><h2 class="disp">The coin</h2><p>Live from Dexscreener. The chart is the market; the card above is the room. Watch them together.</p></div><a class="more" id="dexlink" href="#" target="_blank" rel="noopener">Open on Dexscreener →</a></div>
+  <div class="chart" id="chart"><div class="empty">loading the chart…</div></div>
+</div></section>
+<section><div class="wrap">
+  <div class="sechead"><div><p class="eyebrow">cuts</p><h2 class="disp">On this stream</h2><p>Every clip the agent cut on this stream, with the numbers that caused it.</p></div><a class="more" href="cuts.html">All cuts →</a></div>
+  <div class="wall list" id="clips"><div class="empty">loading…</div></div>
+</div></section>
+<section><div class="wrap">
+  <div class="sechead"><div><p class="eyebrow">fees</p><h2 class="disp">Paid to the launcher</h2><p>The launcher's share of each hourly round, pro rata by this coin's volume in the hour. Signature per transfer.</p></div><a class="more" href="fees.html">Full fee log →</a></div>
+  <div class="tbl"><table id="pay"><thead><tr><th>round</th><th>to</th><th>paid</th><th>tx</th></tr></thead><tbody><tr><td colspan="4" class="d">loading…</td></tr></tbody></table></div>
+</div></section>
+<section><div class="wrap">
+  <div class="sechead"><div><p class="eyebrow">record</p><h2 class="disp">Launch record</h2><p>coins.json entry, as written by the agent at creation.</p></div></div>
+  <pre class="term" id="rec"></pre>
+</div></section>
+
+<footer><div class="wrap">
+  <div><div class="brand"><span class="wm" data-t="WALL">WALL</span></div><p style="margin:0;max-width:34ch">A launchpad for live streams on Solana. The agent counts and cuts. It never posts, never trades, never predicts. Nothing here is financial advice.</p></div>
+  <div><h4>platform</h4><a href="index.html#board">The wall</a><a href="launch.html">launch a coin</a><a href="cuts.html">Cuts</a><a href="fees.html">fee log</a></div>
+  <div><h4>docs</h4><a href="index.html#how">How it works</a><a href="index.html#never">Hard limits</a><a href="index.html#token">$WALL</a><a href="https://github.com/wallpadSOL/wall" target="_blank" rel="noopener">agent source</a></div>
+  <div><h4>network</h4><a href="https://solana.com" target="_blank" rel="noopener">Solana mainnet</a><a href="https://pump.fun" target="_blank" rel="noopener">pump.fun</a><a href="https://jup.ag" target="_blank" rel="noopener">Jupiter</a><a href="https://dexscreener.com" target="_blank" rel="noopener">Dexscreener</a></div>
+  <div><h4>social</h4><a class="xlink2" href="#" target="_blank" rel="noopener">X</a><a href="https://kick.com" target="_blank" rel="noopener">Kick</a><a href="https://twitch.tv" target="_blank" rel="noopener">Twitch</a></div>
+  <div class="fine"><span>wall · wallpad.run · solana</span><span>the desk cuts, the post is yours</span></div>
+</div></footer>
+<script src="assets/wall.js"></script>
+<script>
+(async function () {
+  const $ = s => document.querySelector(s);
+  WALL.clock(); document.querySelectorAll('a.xlink2').forEach(a => a.href = WALL.X_URL);
+  const mint = new URLSearchParams(location.search).get('mint') || '';
+  let coins = [], state = {streams: []}, clips = [], fees = [];
+  try { coins = await WALL.get('coins.json'); } catch (e) {}
+  try { state = await WALL.get('state.json'); WALL.health(state); } catch (e) { WALL.health(null); }
+  try { clips = await WALL.get('clips.json'); } catch (e) {}
+  try { fees = await WALL.get('fees.json'); } catch (e) {}
+  const c = coins.find(x => x.mint === mint);
+  if (!c) { $('#head').innerHTML = `<div><h1 class="disp">no coin with that mint</h1><p class="lead"><a href="index.html#board">back to the wall</a></p></div>`; return; }
+  const s = state.streams.find(x => x.key === c.stream);
+  document.title = `WALL — $${c.ticker}`;
+  const mine = clips.filter(x => x.key === c.stream);
+  const render = () => {
+    const mc = WALL.mcaps[c.mint];
+    $('#head').innerHTML = `
+    <div>
+      <p class="eyebrow">coin · <b>${WALL.esc(c.stream)}</b> · launched ${WALL.ago(c.created)} ago</p>
+      <h1 class="disp"><span>$${WALL.esc(c.ticker)}</span><span class="outline" style="font-size:.55em">${WALL.esc(c.name)}</span></h1>
+      <p class="lead">${WALL.esc(c.description || '')}</p>
+      <div class="cta"><a class="btn fill" href="${WALL.esc(c.pump)}" target="_blank" rel="noopener">pump.fun</a>
+         <a class="btn ghost" href="https://dexscreener.com/solana/${WALL.esc(c.mint)}" target="_blank" rel="noopener">dexscreener</a>
+         <a class="btn ghost" href="https://solscan.io/token/${WALL.esc(c.mint)}" target="_blank" rel="noopener">solscan</a>
+         <a class="btn ghost" href="${WALL.esc(s ? s.url : '#')}" target="_blank" rel="noopener">watch the stream</a></div>
+      <div class="stats" style="max-width:720px">
+        <div class="stat"><div class="l">chat right now</div><div class="v num k">${s && s.live !== false ? s.rate_live + '/s' : 'offline'}</div></div>
+        <div class="stat"><div class="l">the line</div><div class="v num t">${s ? s.line + '/s' : '–'}</div></div>
+        <div class="stat"><div class="l">cuts here</div><div class="v num">${mine.length}</div></div>
+        <div class="stat"><div class="l">market cap</div><div class="v num">${mc ? WALL.usd(mc.mcap) : '–'}</div></div>
+      </div>
+      <div class="mint"><code>${WALL.esc(c.mint)}</code></div>
+    </div>
+    <div class="wall one" style="grid-template-columns:1fr">${s ? WALL.card(s) : '<div class="empty">stream not on the wall right now</div>'}</div>`;
+  };
+  render();
+  WALL.marketcaps([c]).then(render);
+  $('#dexlink').href = `https://dexscreener.com/solana/${encodeURIComponent(c.mint)}`;
+  $('#chart').innerHTML = WALL.SAMPLE
+    ? `<div class="empty">the live chart embeds here on the production site (sample data has no market).</div>`
+    : `<iframe title="$${WALL.esc(c.ticker)} chart" src="https://dexscreener.com/solana/${encodeURIComponent(c.mint)}?embed=1&loadChartSettings=0&trades=0&tabs=0&info=0&chartLeftToolbar=0&chartTheme=dark&theme=dark&chartStyle=1&chartType=usd&interval=15" loading="lazy" allow="clipboard-write" referrerpolicy="no-referrer"></iframe>`;
+  $('#clips').innerHTML = mine.length ? mine.slice(-12).reverse().map(x => WALL.clipCard(x)).join('')
+    : `<div class="empty">no cut on this stream since the coin launched. the next crossing makes one.</div>`;
+  const rows = [];
+  fees.slice().reverse().forEach(r => (r.launchers || []).filter(l => l.to === c.launcher && l.sig).forEach(l =>
+    rows.push(`<tr><td>${new Date(r.ts*1000).toISOString().replace('T',' ').slice(0,16)}</td><td class="d">${WALL.esc(l.to.slice(0,4))}…${WALL.esc(l.to.slice(-4))}</td><td>${WALL.sol(l.lamports)} SOL</td><td>${WALL.tx(l.sig)}</td></tr>`)));
+  $('#pay tbody').innerHTML = rows.length ? rows.join('') : `<tr><td colspan="4" class="d">nothing paid yet. the first round runs an hour after the coin starts trading.</td></tr>`;
+  $('#rec').textContent = JSON.stringify(c, null, 2);
+})();
+</script>
+</body>
+</html>

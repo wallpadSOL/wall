@@ -1,0 +1,82 @@
+<!doctype html>
+<html lang="en" class="js">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<title>WALL — where the fees go</title>
+<meta name="description" content="Every fee round on the wall: collected, burned, paid to launchers, paid to the platform. Every movement has a signature.">
+<meta property="og:image" content="https://wallpad.run/assets/og.jpg">
+<link rel="icon" href="assets/favicon.svg" type="image/svg+xml">
+<link rel="preconnect" href="https://fonts.googleapis.com"><link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Anton&family=Manrope:wght@400;500;600;700;800&family=IBM+Plex+Mono:wght@400;500;600&display=swap">
+<link rel="stylesheet" href="assets/wall.css">
+</head>
+<body>
+<div class="bg" aria-hidden="true"><i class="p1"></i><i class="p2"></i><i class="g1"></i><i class="g2"></i></div><div class="spot" aria-hidden="true"></div>
+<div class="rail"><div class="wrap">
+  <a class="brand" href="index.html"><span class="lg"></span><span class="wm" data-t="WALL">WALL</span></a>
+  <nav><a href="index.html#board">The wall</a><a href="cuts.html">Cuts</a><a href="index.html#how">How it works</a><a class="on" href="fees.html">Fees</a><a href="index.html#token">$WALL</a><a href="index.html#never">Hard limits</a></nav>
+  <div class="right"><span class="clock">--:--:-- UTC</span><span id="agent" class="chip off"><i></i>agent</span><a class="xlink" href="#" target="_blank" rel="noopener" title="WALL on X">𝕏</a><a class="btn fill" href="launch.html">Launch a coin</a></div>
+</div></div>
+
+<header class="hero sub" style="padding-bottom:28px"><div class="wrap" style="grid-template-columns:1fr">
+  <div>
+    <p class="eyebrow">fees · <b>fees.json rendered, nothing typed by hand</b></p>
+    <h1 class="disp" style="max-width:18ch"><span>Where the fees go.</span><span class="outline">Every round, every signature.</span></h1>
+    <p class="lead">The platform wallet creates every coin on the wall, so every coin's creator fees land there. Once an hour the agent collects them and splits them: 40% buys and burns $WALL, 40% goes to the launchers by volume, 20% to the platform's cold wallet. Each transfer below opens on Solscan.</p>
+    <div class="stats" style="max-width:900px">
+      <div class="stat"><div class="l">collected, total</div><div class="v num" id="t-col">–</div></div>
+      <div class="stat"><div class="l">$WALL burned</div><div class="v num k" id="t-tok">–</div></div>
+      <div class="stat"><div class="l">sol spent on burns</div><div class="v num" id="t-burn">–</div></div>
+      <div class="stat"><div class="l">paid to launchers</div><div class="v num t" id="t-launch">–</div></div>
+      <div class="stat"><div class="l">rounds</div><div class="v num" id="t-rounds">–</div></div>
+    </div>
+  </div>
+</div></header>
+
+<section style="border-top:0;padding-top:34px"><div class="wrap">
+  <div class="cols" style="margin-bottom:16px">
+    <div class="box"><div class="n">40%</div><h3>buys and burns $WALL</h3><p>Jupiter swap, then an SPL burn in the same round. Until $WALL is live this share is held in the hot wallet and shown as waiting.</p></div>
+    <div class="box t"><div class="n">40%</div><h3>to the launchers</h3><p>Split between launcher wallets by each coin's last-hour trading volume on Dexscreener. Transfers under 0.000005 SOL are skipped and carried.</p></div>
+    <div class="box"><div class="n">20%</div><h3>to the platform wallet</h3><p>Pays for the box, the buffers, the encoding. Cold wallet, never on a server.</p></div>
+  </div>
+  <div class="tbl"><table id="tbl"><thead><tr><th>round</th><th>collected</th><th>burn share</th><th>launchers</th><th>platform</th><th>note</th></tr></thead><tbody><tr><td colspan="6" class="d">loading fees.json…</td></tr></tbody></table></div>
+</div></section>
+
+<footer><div class="wrap">
+  <div><div class="brand"><span class="wm" data-t="WALL">WALL</span></div><p style="margin:0;max-width:34ch">A launchpad for live streams on Solana. The agent counts and cuts. It never posts, never trades, never predicts. Nothing here is financial advice.</p></div>
+  <div><h4>platform</h4><a href="index.html#board">The wall</a><a href="launch.html">launch a coin</a><a href="cuts.html">Cuts</a><a href="fees.html">fee log</a></div>
+  <div><h4>docs</h4><a href="index.html#how">How it works</a><a href="index.html#never">Hard limits</a><a href="index.html#token">$WALL</a><a href="https://github.com/wallpadSOL/wall" target="_blank" rel="noopener">agent source</a></div>
+  <div><h4>network</h4><a href="https://solana.com" target="_blank" rel="noopener">Solana mainnet</a><a href="https://pump.fun" target="_blank" rel="noopener">pump.fun</a><a href="https://jup.ag" target="_blank" rel="noopener">Jupiter</a><a href="https://dexscreener.com" target="_blank" rel="noopener">Dexscreener</a></div>
+  <div><h4>social</h4><a class="xlink2" href="#" target="_blank" rel="noopener">X</a><a href="https://kick.com" target="_blank" rel="noopener">Kick</a><a href="https://twitch.tv" target="_blank" rel="noopener">Twitch</a></div>
+  <div class="fine"><span>wall · wallpad.run · solana</span><span>every fee movement has a signature</span></div>
+</div></footer>
+<script src="assets/wall.js"></script>
+<script>
+(async function () {
+  const $ = s => document.querySelector(s);
+  WALL.clock(); document.querySelectorAll('a.xlink2').forEach(a => a.href = WALL.X_URL);
+  try { WALL.health(await WALL.get('state.json')); } catch (e) { WALL.health(null); }
+  let rounds = [];
+  try { rounds = await WALL.get('fees.json'); } catch (e) {}
+  let col = 0, burn = 0, paid = 0, tok = 0;
+  const rows = rounds.slice().reverse().map(r => {
+    col += r.collected || 0;
+    const b = r.burn || {}; const bl = (r.split && r.split.burn) || 0;
+    if (b.burn_sig) { burn += bl; tok += b.tokens_raw || 0; }
+    const l = (r.launchers || []).filter(x => x.sig); paid += l.reduce((a, x) => a + x.lamports, 0);
+    return `<tr>
+      <td class="num">${new Date(r.ts * 1000).toISOString().replace('T', ' ').slice(0, 16)}${r.dry_run ? ' <span class="a">dry run</span>' : ''}</td>
+      <td class="num">${WALL.sol(r.collected || 0)} SOL ${WALL.tx(r.collect_sig, 'collect')}</td>
+      <td class="num">${WALL.sol(bl)} ${b.held ? '<span class="a">waiting for $WALL</span>' : b.burn_sig ? `<b class="k">${WALL.tok(b.tokens_raw)} burned</b> ${WALL.tx(b.buy_sig, 'buy')} ${WALL.tx(b.burn_sig, 'burn')}` : b.error ? `<span class="r">${WALL.esc(b.error)}</span>` : ''}</td>
+      <td class="num">${WALL.sol((r.split && r.split.launchers) || 0)} ${l.map(x => WALL.tx(x.sig, x.to.slice(0, 4) + '…')).join(' ')}</td>
+      <td class="num">${WALL.sol((r.split && r.split.platform) || 0)} ${r.platform ? WALL.tx(r.platform.sig) : ''}</td>
+      <td class="d">${WALL.esc(r.note || '')}</td></tr>`;
+  });
+  $('#tbl tbody').innerHTML = rows.length ? rows.join('') : `<tr><td colspan="6" class="d">no rounds yet. the first one runs an hour after the first coin trades.</td></tr>`;
+  $('#t-col').textContent = WALL.sol(col) + ' SOL'; $('#t-burn').textContent = WALL.sol(burn) + ' SOL'; $('#t-tok').textContent = WALL.tok(tok);
+  $('#t-launch').textContent = WALL.sol(paid) + ' SOL'; $('#t-rounds').textContent = rounds.length;
+})();
+</script>
+</body>
+</html>

@@ -1,0 +1,52 @@
+# WALL agent config. Copy to config.toml and edit.
+
+[agent]
+data_dir = "/opt/wall/data"
+# streams that are always on the wall when live, "platform:slug". people, not tournaments.
+pinned = ["twitch:kaicenat", "twitch:ishowspeed", "kick:adinross", "kick:clavicular", "twitch:xqc", "kick:xqc", "twitch:jynxzi", "twitch:stableronaldo", "twitch:zackrawrr", "kick:n3on", "twitch:plaqueboymax", "kick:lospollostv"]
+# plus the top live streams by viewers in these categories, picked every refresh
+auto_top_twitch = 3
+auto_top_kick = 3
+categories = ["Just Chatting", "IRL"]      # empty list = any category
+exclude_categories = ["Slots & Casino"]    # never, even if pinned by mistake
+twitch_languages = ["en"]
+max_streams = 12
+refresh_s = 60
+
+[detector]
+tick_s = 10            # seconds per tick
+baseline_ticks = 6     # the minute before the rated tick
+spike_x = 3.0          # the line: 3x the stream's own last minute
+warm_x = 1.5
+floor_per_s = 2.0      # below two messages a second a chat never fires
+cooldown_s = 90
+baseline_min_per_s = 0.3
+
+[server]
+host = "127.0.0.1"     # Caddy sits in front and does https
+port = 8791
+cors = "*"
+
+[clipper]
+enabled = true
+quality = "480p,360p,worst"
+clip_s = 30
+
+[solana]
+enabled = false        # flip to true once the hot wallet is funded
+rpc = "https://api.mainnet-beta.solana.com"
+hot_key_file = "/opt/wall/hot-wallet.json"
+cold_wallet = "HvUt5xGeKiJMEtPNVkps3vNsTY2JgauhDqiKz3h7udnz"
+wall_mint = ""         # set when the dev deploys $WALL
+launch_fee_sol = 0.05  # what a launcher pays the hot wallet
+dev_buy_sol = 0.01     # the hot wallet's first buy of every new coin
+min_wall_hold = 0      # $WALL a launcher must hold; 0 until the mint exists
+hot_float_sol = 0.15   # the hot wallet keeps this much to create coins; everything above it is swept to cold_wallet each round
+site = "https://wallpad.run"
+twitter = ""
+
+[fees]
+burn = 0.4             # buys and burns $WALL
+launchers = 0.4        # to whoever launched, pro rata by last-hour volume
+platform = 0.2         # to the cold wallet
+min_round_sol = 0.01

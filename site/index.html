@@ -1,0 +1,211 @@
+<!doctype html>
+<html lang="en" class="js">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<title>WALL — a launchpad for live streams</title>
+<meta name="description" content="Every coin on the wall is tied to a live Kick or Twitch stream. An agent reads the chat and cuts the clip the moment the room runs three times its own last minute. One rule, public, the same for every stream. 40% of fees buy and burn $WALL.">
+<meta property="og:title" content="WALL — every stream gets a coin. the chat cuts the clips.">
+<meta property="og:description" content="A launchpad for live streams on Solana. The agent reads the chat and cuts the clip when the room wakes up. One rule, public. 40% of every coin's fees buy and burn $WALL.">
+<meta property="og:image" content="https://wallpad.run/assets/og.jpg">
+<meta name="twitter:card" content="summary_large_image">
+<link rel="icon" href="assets/favicon.svg" type="image/svg+xml">
+<link rel="preconnect" href="https://fonts.googleapis.com"><link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Anton&family=Manrope:wght@400;500;600;700;800&family=IBM+Plex+Mono:wght@400;500;600&display=swap">
+<link rel="stylesheet" href="assets/wall.css">
+</head>
+<body>
+<div class="bg" aria-hidden="true"><i class="p1"></i><i class="p2"></i><i class="g1"></i><i class="g2"></i></div><div class="spot" aria-hidden="true"></div>
+<div class="rail"><div class="wrap">
+  <a class="brand" href="index.html"><span class="lg"></span><span class="wm" data-t="WALL">WALL</span></a>
+  <nav><a class="on" href="#board">The wall</a><a href="#week">Clips</a><a href="#cuts">Cuts</a><a href="#how">How it works</a><a href="#fees">Fees</a><a href="#token">$WALL</a><a href="#never">Hard limits</a></nav>
+  <div class="right"><span class="clock">--:--:-- UTC</span><span id="agent" class="chip off"><i></i>agent</span><a class="xlink" href="#" target="_blank" rel="noopener" title="WALL on X">𝕏</a><a class="btn fill" href="launch.html">Launch a coin</a></div>
+</div></div>
+<div class="ticker" aria-hidden="true"><div class="track" id="ticker-track"></div></div>
+
+<header class="hero"><div class="wrap">
+  <div>
+    <p class="eyebrow">a launchpad for live streams · <b>solana</b></p>
+    <h1 class="disp"><span>Every stream</span><span>gets a coin.</span><span class="k">The chat cuts</span><span class="k">the clips.</span></h1>
+    <p class="lead">Pick a live Kick or Twitch stream and launch a coin for it. An agent sits in the chat and counts. When the room runs <b>three times its own last minute</b>, it cuts the clip and writes the verdict in public. One rule for every stream. <b>It never posts, never trades.</b></p>
+    <div class="cta"><a class="btn fill big" href="launch.html">Launch a coin</a><a class="btn link big" href="#board">See the wall →</a></div>
+  </div>
+  <div class="stage" id="stage"><div class="glow"></div></div>
+    <div class="stats hero-stats">
+      <div class="stat"><div class="l">streams live</div><div class="v" id="st-streams">–</div></div>
+      <div class="stat"><div class="l">watching now</div><div class="v" id="st-viewers">–</div></div>
+      <div class="stat"><div class="l">over the line</div><div class="v k" id="st-spikes">–</div></div>
+      <div class="stat"><div class="l">cuts, 24h</div><div class="v" id="st-cuts">–</div></div>
+      <div class="stat"><div class="l">$WALL burned</div><div class="v t" id="st-burned">–</div></div>
+    </div>
+</div></header>
+
+<div class="fast"><div class="wrap"><ol class="howfast" aria-label="how it works, short">
+  <li><span class="n">01</span><b>Pick a live stream</b><span>Kick or Twitch, any room on the wall. 0.05 SOL, one tap in Phantom, the coin is on pump.fun.</span></li>
+  <li><span class="n">02</span><b>The chat does the work</b><span>The agent counts messages. Three times the room's own last minute is the line. Same rule for everyone.</span></li>
+  <li><span class="n">03</span><b>Clip, coin, fees</b><span>Over the line, the clip is cut within seconds and lands on the coin page. Fees split every hour: burn, launchers, platform.</span></li>
+</ol></div></div>
+
+<section id="now" style="border-top:0;padding-top:34px"><div class="wrap">
+  <div class="now">
+    <div class="panel feedbox">
+      <div class="head"><span class="chip live"><i></i>live</span><b>the agent, right now</b><span class="n" id="feed-n">–</span></div>
+      <div class="feed" id="feed"><div class="empty">loading the log…</div></div>
+      <div class="foot"><span>every line is an action of the agent, with the number that caused it</span><a href="cuts.html">verdicts →</a></div>
+    </div>
+    <div class="panel boardbox">
+      <div class="head"><b>coins on the wall</b><span class="n d">by market cap · dexscreener</span></div>
+      <div id="coins-board"><div class="empty">loading…</div></div>
+      <div class="foot"><span>every coin here is tied to a live chat. the room column is that chat right now.</span><a href="launch.html">launch one →</a></div>
+    </div>
+  </div>
+</div></section>
+
+<section id="board" style="border-top:0"><div class="wrap">
+  <div class="sechead">
+    <div><p class="eyebrow">live</p><h2 class="disp">The wall</h2>
+      <p>Every card is a live chat rated against itself. The big number is messages per second right now. The purple mark is the line, three times what that chat did in the minute before. Cross it and the card turns green, the agent cuts, and the cooldown starts.</p></div>
+    <a class="more" href="launch.html">Put a stream on the wall →</a>
+  </div>
+  <p class="rail-hint">swipe through the wall <i></i></p>
+  <div class="wall" id="wall"><div class="empty">loading the wall…</div></div>
+</div></section>
+
+<section id="week"><div class="wrap">
+  <div class="sechead">
+    <div><p class="eyebrow">this week · by views</p><h2 class="disp">Clips the room made</h2>
+      <p>The most-watched clips of the last seven days from the streamers on the wall, straight from Twitch and Kick. This is what a chat does when it goes off. Pick the one you would not want to miss next time and put that stream on the wall.</p></div>
+    <a class="more" href="cuts.html">All cuts and verdicts →</a>
+  </div>
+  <p class="rail-hint">swipe, biggest first <i></i></p>
+  <div class="trend" id="trending"><div class="empty">loading the week…</div></div>
+</div></section>
+
+<section id="cuts"><div class="wrap">
+  <div class="sechead">
+    <div><p class="eyebrow">fresh</p><h2 class="disp">Cuts from the wall</h2>
+      <p>The last two minutes of every stream on the wall sit in a ring buffer on the agent's box. At a crossing the newest thirty seconds become a clip, stamped with the chat numbers that caused it. It goes into the queue. A person posts it from the coin's account. The agent never does.</p></div>
+    <a class="more" href="cuts.html">All cuts and verdicts →</a>
+  </div>
+  <div class="fresh" id="fresh"><div class="empty">loading cuts…</div></div>
+  <pre class="term" style="margin-top:14px" id="spikes"><span class="c"># spikes.json</span></pre>
+</div></section>
+
+<section id="how"><div class="wrap">
+  <div class="sechead">
+    <div><p class="eyebrow">how it works</p><h2 class="disp">A loop that never sleeps</h2>
+      <p>No score, no prediction, no setting a person can tune per stream. The rule fits in a terminal window and every number on this page comes out of it.</p></div>
+  </div>
+  <p class="rail-hint">eight steps, swipe <i></i></p>
+  <div class="loop">
+    <div class="step"><div class="n">01</div><pre>  .--------.
+  | &gt; chat |  anon
+  '--------'  read-only</pre><h3>Join</h3><p>The agent joins the stream's chat as an anonymous reader. It can see messages. It cannot send one.</p><div class="tags">kick · twitch · no account</div></div>
+    <div class="step"><div class="n">02</div><pre>  |##|##|##|##|##|##|
+  10s 10s 10s 10s 10s</pre><h3>Count</h3><p>Messages are counted in ten-second ticks aligned to the clock, so anyone replaying the chat gets the same counts.</p><div class="tags">epoch-aligned · deterministic</div></div>
+    <div class="step"><div class="n">03</div><pre>  rate     = tick / 10
+  baseline = last 60s / 60</pre><h3>Rate</h3><p>The stream is rated only against itself: the last complete tick over its own minute before. Not against a number we picked, not against another stream.</p><div class="tags">self-relative · no global scale</div></div>
+    <div class="step"><div class="n">04</div><pre>  ----------------- 3x
+          ^ you are here</pre><h3>The line</h3><p>Three times the minute before, and at least two messages a second. Under that a quiet chat with one joke does not fire.</p><div class="tags">3.0x · floor 2/s</div></div>
+    <div class="step"><div class="n">05</div><pre>  [ring 120s] -&gt; [30s] -&gt; mp4
+  ffmpeg, no re-encode</pre><h3>Cut</h3><p>Over the line, the newest thirty seconds leave the ring buffer as a clip, with a thumbnail and the numbers that caused it.</p><div class="tags">streamlink · ffmpeg · 480p</div></div>
+    <div class="step"><div class="n">06</div><pre>  clips.json
+  posted: false</pre><h3>Queue</h3><p>The clip lands in a public queue on the coin's page. Someone with the coin's account posts it, or does not. The agent has no account.</p><div class="tags">human posts · agent never</div></div>
+    <div class="step"><div class="n">07</div><pre>  cooldown ######## 90s</pre><h3>Cooldown</h3><p>One cut per crossing. After a spike the stream cannot fire again for ninety seconds, so one moment is one clip.</p><div class="tags">90 s · one moment, one clip</div></div>
+    <div class="step"><div class="n">08</div><pre>  every hour:
+  collect -&gt; 40 / 40 / 20</pre><h3>Fees</h3><p>Once an hour the platform wallet collects every coin's creator fees and splits them. Every transfer gets a signature in the log.</p><div class="tags">burn · launchers · platform</div></div>
+  </div>
+  <pre class="term" style="margin-top:14px"><span class="c"># agent/detector.py, the whole rule. open source, one function, tested.</span>
+rate       = messages in the last complete tick / 10
+baseline   = messages in the 6 ticks before it / 60
+multiplier = rate / max(baseline, 0.3)
+<span class="p">SPIKE</span>      = multiplier &gt;= 3.0 and rate &gt;= 2.0 and not cooling
+<span class="t">WARM</span>       = multiplier &gt;= 1.5
+cooldown   = 90 s after a SPIKE
+warm-up    = 70 s after joining: no verdict before the minute is seen</pre>
+</div></section>
+
+<section id="fees"><div class="wrap">
+  <div class="sechead">
+    <div><p class="eyebrow">economics</p><h2 class="disp">Where the fees go</h2>
+      <p>Every coin on the wall is created by the platform wallet, so every coin's creator fees land in one place. Once an hour they are split three ways and every transaction is written to a public log.</p></div>
+    <a class="more" href="fees.html">Open the fee log →</a>
+  </div>
+  <div class="cols">
+    <div class="box"><div class="n">40%</div><h3>buys and burns $WALL</h3><p>Swapped on Jupiter, burned in the same round, both signatures in the log. The wall's volume becomes $WALL supply leaving forever.</p></div>
+    <div class="box t"><div class="n">40%</div><h3>to the launchers</h3><p>Whoever launched a coin gets a share every hour, pro rata by that coin's trading volume in the hour. Launch a stream that moves and you are paid for it.</p></div>
+    <div class="box"><div class="n">20%</div><h3>runs the agent</h3><p>Server, ring buffers, encoding. Sent to the platform's cold wallet, which is never on a server. Also in the log.</p></div>
+  </div>
+  <div class="burn" id="burn"></div>
+</div></section>
+
+<section id="token"><div class="wrap">
+  <div class="sechead">
+    <div><p class="eyebrow">the platform coin</p><h2 class="disp">$WALL</h2>
+      <p>One coin for the whole wall. It is not tied to a stream. It is tied to all of them.</p></div>
+  </div>
+  <div class="token">
+    <div class="box"><h3>what it does</h3>
+      <ul>
+        <li><b class="k">burned every hour.</b> 40% of every coin's creator fees buy $WALL and burn it. More streams on the wall, more fees, more burn.</li>
+        <li><b class="k">the key to the launch page.</b> Launching a coin requires holding $WALL. The amount: <span id="hold-req">set on launch day</span>. No hold, no launch.</li>
+        <li><b class="k">nothing else.</b> No staking page, no points, no promises. The burn log is the whole story and it is public.</li>
+      </ul>
+      <div class="mint" id="mint"></div>
+    </div>
+    <div class="box"><h3>what it is not</h3>
+      <ul>
+        <li>Not a share of anything. Holding $WALL does not pay you. The burn is the only mechanism.</li>
+        <li>Not controlled by the agent. The hot wallet buys and burns on a timer with public signatures. It cannot sell $WALL. The code has no sell path.</li>
+        <li>Not launched twice. One mint, posted from the project account on launch day. Any other address with this name is not ours.</li>
+      </ul>
+    </div>
+  </div>
+</div></section>
+
+<section id="never"><div class="wrap">
+  <div class="sechead">
+    <div><p class="eyebrow">hard limits</p><h2 class="disp">What it will never do</h2>
+      <p>These are not settings. They are things the code cannot do, and you can read the code.</p></div>
+    <a class="more" href="https://github.com/wallpadSOL/wall" target="_blank" rel="noopener">Agent source →</a>
+  </div>
+  <div class="cols three">
+    <div class="box hard"><h3>never posts</h3><p>The agent cuts a clip and puts it in a queue. It has no X account, no Kick account, no Twitch account. A person decides what goes out and from where.</p></div>
+    <div class="box hard"><h3>never trades</h3><p>The hot wallet creates coins, makes the first buy, collects fees and burns $WALL. It does not buy, sell or hold anyone's coin after the first launch buy.</p></div>
+    <div class="box hard"><h3>never predicts</h3><p>Counts, rates and ratios. No score, no target, no "about to pump". A verdict is a number compared with another number.</p></div>
+    <div class="box hard"><h3>never tunes per stream</h3><p>One rule, one set of numbers, printed above. There is no per-stream setting in the config and no way to add one without a commit.</p></div>
+    <div class="box hard"><h3>never hides a transaction</h3><p>Every fee movement is in fees.json with a signature you can open on Solscan. Every clip has the counts that caused it.</p></div>
+    <div class="box hard"><h3>never holds the cold key</h3><p>The hot wallet holds pocket money and runs on the box. The platform's share goes to a cold wallet that no server has ever seen.</p></div>
+  </div>
+</div></section>
+
+<section id="faq"><div class="wrap">
+  <div class="sechead"><div><p class="eyebrow">questions</p><h2 class="disp">Straight answers</h2></div></div>
+  <div class="faq">
+    <details><summary>Why tie a coin to a stream?</summary><p>A live stream is live attention. The chat is a number anyone can watch. The coin gets a reason to move that is not a tweet from the deployer: the room itself. When the room goes off, the clip exists within seconds and the coin's page shows it.</p></details>
+    <details><summary>Who posts the clips?</summary><p>A person with the coin's account. The agent only cuts and queues. If nobody posts, the clip stays on the coin page with its numbers. We are not building a bot that spams X.</p></details>
+    <details><summary>What does a launcher get?</summary><p>40% of the fees, split every hour between launchers by their coin's trading volume in that hour. The transfer has a signature in the fee log. Your wallet is the launcher of record from the moment the coin is created.</p></details>
+    <details><summary>Does the streamer have to agree?</summary><p>No. The agent reads a public chat anonymously and clips a public stream. The streamer can see the coin page like anyone else. If a streamer asks us to take their stream off the wall, we take it off. That is a rule, not a setting.</p></details>
+    <details><summary>What happens when the stream goes offline?</summary><p>The card says offline, the rate drops to zero, nothing cuts. The coin keeps trading on pump.fun like any other coin. When the stream comes back, the agent rejoins and the warm-up starts again.</p></details>
+    <details><summary>Can the agent be wrong?</summary><p>It can cut a boring moment if the chat spams. It cannot cut a moment the chat ignored. Every cut carries its counts, so a wrong cut is visible as a wrong cut. We would rather be wrong in public than right in private.</p></details>
+    <details><summary>Is the agent open source?</summary><p>Yes. The rule is one function with tests. The clipper is streamlink and ffmpeg. The fee round is one script on a timer. You can run the whole thing on a $5 box and get the same numbers.</p></details>
+  </div>
+</div></section>
+
+<div class="band"><div class="wrap"><div class="in">
+  <div><h2 class="disp">Put a stream<br>on the wall.</h2><p>Pick the one whose chat you would not want to miss. The agent takes it from there.</p></div>
+  <a class="btn fill big" href="launch.html">Launch a coin</a>
+</div></div></div>
+
+<footer><div class="wrap">
+  <div><div class="brand"><span class="wm" data-t="WALL">WALL</span></div><p style="margin:0;max-width:34ch">A launchpad for live streams on Solana. The agent counts and cuts. It never posts, never trades, never predicts. Nothing here is financial advice.</p></div>
+  <div><h4>platform</h4><a href="index.html#board">The wall</a><a href="launch.html">launch a coin</a><a href="cuts.html">Cuts</a><a href="fees.html">fee log</a></div>
+  <div><h4>docs</h4><a href="index.html#how">How it works</a><a href="index.html#never">Hard limits</a><a href="index.html#token">$WALL</a><a href="https://github.com/wallpadSOL/wall" target="_blank" rel="noopener">agent source</a></div>
+  <div><h4>network</h4><a href="https://solana.com" target="_blank" rel="noopener">Solana mainnet</a><a href="https://pump.fun" target="_blank" rel="noopener">pump.fun</a><a href="https://jup.ag" target="_blank" rel="noopener">Jupiter</a><a href="https://dexscreener.com" target="_blank" rel="noopener">Dexscreener</a></div>
+  <div><h4>social</h4><a class="xlink2" href="#" target="_blank" rel="noopener">X</a><a href="https://kick.com" target="_blank" rel="noopener">Kick</a><a href="https://twitch.tv" target="_blank" rel="noopener">Twitch</a></div>
+  <div class="fine"><span>wall · wallpad.run · solana</span><span>read-only on the chat · the desk cuts, the post is yours</span></div>
+</div></footer>
+<script src="assets/wall.js"></script>
+<script>document.querySelectorAll('a.xlink2').forEach(a => a.href = WALL.X_URL); WALL.init();</script>
+</body>
+</html>

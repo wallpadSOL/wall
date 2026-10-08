@@ -1,0 +1,10 @@
+[Unit]
+Description=WALL treasury: one fee round (collect, buy and burn, pay out)
+
+[Service]
+Type=oneshot
+User=wall
+Group=wall
+WorkingDirectory=/opt/wall/app
+EnvironmentFile=-/etc/wall.env
+ExecStart=/opt/wall/venv/bin/python -m agent -c /opt/wall/config.toml fees

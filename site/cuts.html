@@ -1,0 +1,75 @@
+<!doctype html>
+<html lang="en" class="js">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<title>WALL — every cut, every verdict</title>
+<meta name="description" content="Every clip the agent cut, with the chat numbers that caused it, and every verdict from the rule.">
+<meta property="og:image" content="https://wallpad.run/assets/og.jpg">
+<link rel="icon" href="assets/favicon.svg" type="image/svg+xml">
+<link rel="preconnect" href="https://fonts.googleapis.com"><link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Anton&family=Manrope:wght@400;500;600;700;800&family=IBM+Plex+Mono:wght@400;500;600&display=swap">
+<link rel="stylesheet" href="assets/wall.css">
+</head>
+<body>
+<div class="bg" aria-hidden="true"><i class="p1"></i><i class="p2"></i><i class="g1"></i><i class="g2"></i></div><div class="spot" aria-hidden="true"></div>
+<div class="rail"><div class="wrap">
+  <a class="brand" href="index.html"><span class="lg"></span><span class="wm" data-t="WALL">WALL</span></a>
+  <nav><a href="index.html#board">The wall</a><a class="on" href="cuts.html">Cuts</a><a href="index.html#how">How it works</a><a href="fees.html">Fees</a><a href="index.html#token">$WALL</a><a href="index.html#never">Hard limits</a></nav>
+  <div class="right"><span class="clock">--:--:-- UTC</span><span id="agent" class="chip off"><i></i>agent</span><a class="xlink" href="#" target="_blank" rel="noopener" title="WALL on X">𝕏</a><a class="btn fill" href="launch.html">Launch a coin</a></div>
+</div></div>
+
+<header class="hero sub" style="padding-bottom:28px"><div class="wrap" style="grid-template-columns:1fr">
+  <div>
+    <p class="eyebrow">cuts · <b>clips.json and spikes.json rendered</b></p>
+    <h1 class="disp" style="max-width:18ch"><span>Every cut,</span><span class="outline">every verdict.</span></h1>
+    <p class="lead">A clip exists only because a chat crossed the line. Each one carries the rate, the baseline and the multiplier that caused it, so a wrong cut is visible as a wrong cut. Nothing here is typed by hand.</p>
+    <div class="stats" style="max-width:720px">
+      <div class="stat"><div class="l">cuts, total</div><div class="v num" id="c-total">–</div></div>
+      <div class="stat"><div class="l">cuts, 24h</div><div class="v num k" id="c-day">–</div></div>
+      <div class="stat"><div class="l">posted by a person</div><div class="v num" id="c-posted">–</div></div>
+      <div class="stat"><div class="l">loudest crossing</div><div class="v num t" id="c-max">–</div></div>
+    </div>
+  </div>
+</div></header>
+
+<section style="border-top:0;padding-top:34px"><div class="wrap">
+  <div class="sechead"><div><p class="eyebrow">the queue</p><h2 class="disp">Cuts</h2><p>Newest first. Download is the raw mp4 the agent wrote. The post is yours.</p></div></div>
+  <div class="wall list" id="clips"><div class="empty">loading…</div></div>
+</div></section>
+
+<section><div class="wrap">
+  <div class="sechead"><div><p class="eyebrow">this week · by views</p><h2 class="disp">Clips the room made</h2><p>The most-watched clips of the last seven days from the streamers on the wall, from Twitch and Kick. What a chat does when it goes off.</p></div></div>
+  <div class="trend" id="trending"><div class="empty">loading the week…</div></div>
+</div></section>
+<section><div class="wrap">
+  <div class="sechead"><div><p class="eyebrow">the log</p><h2 class="disp">Verdicts</h2><p>Every time a chat crossed the line, with the numbers. Replay the chat with the rule and you get the same lines.</p></div></div>
+  <pre class="term" id="spikes"><span class="c"># spikes.json</span></pre>
+</div></section>
+
+<footer><div class="wrap">
+  <div><div class="brand"><span class="wm" data-t="WALL">WALL</span></div><p style="margin:0;max-width:34ch">A launchpad for live streams on Solana. The agent counts and cuts. It never posts, never trades, never predicts. Nothing here is financial advice.</p></div>
+  <div><h4>platform</h4><a href="index.html#board">The wall</a><a href="launch.html">launch a coin</a><a href="cuts.html">Cuts</a><a href="fees.html">fee log</a></div>
+  <div><h4>docs</h4><a href="index.html#how">How it works</a><a href="index.html#never">Hard limits</a><a href="index.html#token">$WALL</a><a href="https://github.com/wallpadSOL/wall" target="_blank" rel="noopener">agent source</a></div>
+  <div><h4>network</h4><a href="https://solana.com" target="_blank" rel="noopener">Solana mainnet</a><a href="https://pump.fun" target="_blank" rel="noopener">pump.fun</a><a href="https://jup.ag" target="_blank" rel="noopener">Jupiter</a><a href="https://dexscreener.com" target="_blank" rel="noopener">Dexscreener</a></div>
+  <div><h4>social</h4><a class="xlink2" href="#" target="_blank" rel="noopener">X</a><a href="https://kick.com" target="_blank" rel="noopener">Kick</a><a href="https://twitch.tv" target="_blank" rel="noopener">Twitch</a></div>
+  <div class="fine"><span>wall · wallpad.run · solana</span><span>the desk cuts, the post is yours</span></div>
+</div></footer>
+<script src="assets/wall.js"></script>
+<script>
+(async function () {
+  const $ = s => document.querySelector(s);
+  WALL.clock(); document.querySelectorAll('a.xlink2').forEach(a => a.href = WALL.X_URL);
+  try { WALL.health(await WALL.get('state.json')); } catch (e) { WALL.health(null); }
+  let clips = [];
+  try { clips = await WALL.get('clips.json'); } catch (e) {}
+  $('#c-total').textContent = clips.length;
+  $('#c-day').textContent = clips.filter(c => c.ts > Date.now()/1000 - 86400).length;
+  $('#c-posted').textContent = clips.filter(c => c.posted).length;
+  $('#c-max').textContent = clips.length ? Math.max(...clips.map(c => c.multiplier)) + 'x' : '–';
+  WALL.renderClips(true); WALL.renderSpikes(200); WALL.renderTrending();
+  setInterval(() => { WALL.renderClips(true); WALL.renderSpikes(200); }, 20000);
+})();
+</script>
+</body>
+</html>

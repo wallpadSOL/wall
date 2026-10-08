@@ -1,0 +1,24 @@
+# runtime, never committed
+data/
+*.json.tmp
+hot-wallet.json
+config.toml
+/etc/
+.env
+# python
+__pycache__/
+*.pyc
+.pytest_cache/
+venv/
+.venv/
+# os / editors
+.DS_Store
+Thumbs.db
+.idea/
+.vscode/
+
+# samples that are only for the demo artifact, and local scratch
+site/sample/thumbs/
+site/sample/clips/
+_to_delete/
+*.tar.gz

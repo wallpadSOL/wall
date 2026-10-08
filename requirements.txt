@@ -1,0 +1,6 @@
+websockets>=12
+requests>=2.31
+solders>=0.21
+curl_cffi>=0.7
+streamlink>=6.9
+tomli>=2; python_version < "3.11"

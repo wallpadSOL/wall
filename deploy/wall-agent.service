@@ -1,0 +1,22 @@
+[Unit]
+Description=WALL agent: reads stream chats, cuts clips, serves the wall
+After=network-online.target
+Wants=network-online.target
+
+[Service]
+Type=simple
+User=wall
+Group=wall
+WorkingDirectory=/opt/wall/app
+EnvironmentFile=-/etc/wall.env
+Environment=PATH=/opt/wall/venv/bin:/usr/local/sbin:/usr/local/bin:/usr/sbin:/usr/bin:/sbin:/bin
+ExecStart=/opt/wall/venv/bin/python -m agent -c /opt/wall/config.toml run
+Restart=always
+RestartSec=5
+NoNewPrivileges=true
+PrivateTmp=true
+ProtectSystem=full
+ReadWritePaths=/opt/wall/data
+
+[Install]
+WantedBy=multi-user.target
