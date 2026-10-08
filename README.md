@@ -1,3 +1,5 @@
+<a href="https://wallpad.run"><img src="https://wallpad.run/assets/brand/banner.png" width="100%" alt="WALL. Every stream gets a coin. The chat cuts the clips."></a>
+
 # WALL
 
 A launchpad for live streams on Solana. Live at **[wallpad.run](https://wallpad.run)**, the agent at `api.wallpad.run`.
