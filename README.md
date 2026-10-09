@@ -4,6 +4,8 @@
 
 A launchpad for live streams on Solana. Live at **[wallpad.run](https://wallpad.run)**, the agent at `api.wallpad.run`, the account **[@justwallpad](https://x.com/justwallpad)** on X.
 
+**$WALL**: `5beM5KG6JQLFuzRYaHqQwRd48VDGpzMZwdm78eSppump` on pump.fun. Buy it on [wallpad.run](https://wallpad.run/#token). Any other address with this name is not ours.
+
 Every coin on the wall is tied to one live Kick or Twitch stream. An agent sits in that stream's chat, counts messages in ten-second ticks, and the moment the chat runs three times its own last minute it cuts a 30-second clip and writes the verdict to a public log. One rule, the same for every stream, printed on the site. The agent counts and cuts. It never posts and never trades.
 
 The platform wallet creates every coin, so every coin's creator fees land in one place. Once an hour they are split: 40% buys and burns $WALL, 40% goes to the people who launched the coins (pro rata by last-hour volume), 20% to the platform. Every movement has a signature on the fee page.
